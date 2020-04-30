@@ -5,8 +5,10 @@ class Mail
       client_id: ENV['AZURE_APP_ID'],
       scope: 'https://graph.microsoft.com/.default',
       client_secret: ENV['AZURE_APP_SECRET'],
-      grant_type: 'client_credentials' }
+      grant_type: 'client_credentials' 
+    }
     endpoint = 'https://login.microsoftonline.com/463df9dd-2805-409d-accd-87793d4a3720/oauth2/v2.0/token'
+
     HTTParty.post endpoint,
       body: body,
       header: { "Content-Type" => "application/x-www-form-urlencoded" }
@@ -23,7 +25,7 @@ class Mail
     }
 
     mails = JSON.parse(HTTParty.get(endpoint, headers: headers, query: query).body.gsub('=>', ':'))
-    mails["value"].select { |mail| !mail["categories"].empty? }.map { |mail| [mail["subject"], mail["body"]["content"], mail["categories"][0]] } unless mails["value"].nil?
+    mails["value"].select { |mail| !mail["categories"].empty? }.map { |mail| [mail["subject"], mail["body"]["content"], mail["categories"][0]] }
   end
 
   def perform

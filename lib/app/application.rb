@@ -4,10 +4,8 @@ require_relative 'task'
 class Application
 
   def perform
-    ot_mails = Mail.new.perform
-    ot_mails.each do |mail|
-      Task.new(mail).perform
-    end
+    mails = Mail.new.perform
+    mails.each { | m | Task.new(m).perform }
   end
 
 end

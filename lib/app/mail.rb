@@ -23,7 +23,7 @@ class Mail
     }
 
     mails = JSON.parse(HTTParty.get(endpoint, headers: headers, query: query).body.gsub('=>', ':'))
-    mails["value"].select { |mail| !mail["categories"].empty? }.map { |mail| [mail["subject"], mail["body"]["content"], mail["categories"][0]] }
+    mails["value"].select { |mail| !mail["categories"].empty? }.map { |mail| [mail["subject"], mail["body"]["content"], mail["categories"][0]] } unless mails["value"].nil?
   end
 
   def perform

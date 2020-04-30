@@ -9,4 +9,3 @@ gem 'httparty'
 gem 'omniauth-oauth2'
 gem 'json'
 gem 'asana'
-gem 'whenever', require: false

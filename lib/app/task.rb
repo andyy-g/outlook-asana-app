@@ -1,5 +1,3 @@
-require_relative "credentials"
-
 class Task
 
   def initialize(ot_mail)
@@ -7,7 +5,7 @@ class Task
   end
 
   def get_client
-    token = TOKEN_ASANA
+    token = ENV['TOKEN_ASANA']
     Asana::Client.new do |c|
       c.authentication :access_token, token
     end

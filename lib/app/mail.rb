@@ -1,12 +1,10 @@
-require_relative "credentials"
-
 class Mail
 
   def get_token
     body = {
-      client_id: AZURE_APP_ID,
+      client_id: ENV['AZURE_APP_ID'],
       scope: 'https://graph.microsoft.com/.default',
-      client_secret: AZURE_APP_SECRET,
+      client_secret: ENV['AZURE_APP_SECRET'],
       grant_type: 'client_credentials' }
     endpoint = 'https://login.microsoftonline.com/463df9dd-2805-409d-accd-87793d4a3720/oauth2/v2.0/token'
     HTTParty.post endpoint,

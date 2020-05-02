@@ -20,11 +20,8 @@ class Mail
       Authorization: "Bearer #{token}",
       Prefer: "outlook.body-content-type='text'"
     }
-    query = {
-      '$top': '20'
-    }
 
-    mails = JSON.parse(HTTParty.get(endpoint, headers: headers, query: query).body.gsub('=>', ':'))
+    mails = JSON.parse(HTTParty.get(endpoint, headers: headers).body.gsub('=>', ':'))
     mails["value"].select { |mail| !mail["categories"].empty? }.map { |mail| [mail["subject"], mail["body"]["content"], mail["categories"][0]] }
   end
 

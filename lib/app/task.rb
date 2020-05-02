@@ -34,12 +34,16 @@ class Task
     task_data = get_task_data(client)
     if !task_already_exists?(client, task_data[:section])
       client.tasks.create(workspace: task_data[:workspace].gid, memberships: [project: task_data[:project].gid, section: task_data[:section].gid], name: @ot_mail[0], notes: @ot_mail[1])
+      return "Task #{@ot_mail[0]} created!"
+    else
+      return "Task #{@ot_mail[0]} already exists!"
     end
 
   end 
 
   def perform
-    create_task(get_client)
+    message = create_task(get_client)
+    puts message
   end
 
 end

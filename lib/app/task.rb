@@ -11,7 +11,7 @@ class Task
     end
   end
 
-  def create_task(client)
+  def get_task_data(client)
     workspace = client.workspaces.find_all.first
     project = 0
     client.projects.find_all(workspace: workspace.gid).map { | p | project = p if p.name == "Backup mails" }
@@ -21,12 +21,29 @@ class Task
       client.sections.create_in_project(project: project.gid, name: @ot_mail[2])
       client.sections.find_by_project(project: project.gid).each { |s| section = s if s.name == @ot_mail[2] }
     end
-    client.tasks.create(workspace: workspace.gid, memberships: [project: project.gid, section: section.gid], name: @ot_mail[0], notes: @ot_mail[1])
+    { workspace: workspace, project: project, section: section }
+  end
+
+  def task_already_exists?(client, section)
+    exist = false
+    client.tasks.find_by_section(section: section.gid).each { |t| exist = true if t.name == @ot_mail[0] }
+    exist
+  end
+
+  def create_task(client)
+    task_data = get_task_data(client)
+    if !task_already_exists?(client, task_data[:section])
+      client.tasks.create(workspace: task_data[:workspace].gid, memberships: [project: task_data[:project].gid, section: task_data[:section].gid], name: @ot_mail[0], notes: @ot_mail[1])
+      return "Task #{@ot_mail[0]} created!"
+    else
+      return "Task #{@ot_mail[0]} already exist."
+    end
+
   end 
 
   def perform
-    create_task(get_client)
-    puts "Task created !"
+    message = create_task(get_client)
+    puts message
   end
 
 end
